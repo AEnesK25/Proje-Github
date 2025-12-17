@@ -21,11 +21,6 @@ public class Main {
             try {
                 // To see if file appears or not
                 File file = new File(fileName);
-                if (!file.exists()) {
-                    System.out.println("Dosya bulunamadı: " + fileName);
-                    System.out.println("Aranan konum: " + file.getAbsolutePath());
-                    return;
-                }
                 reader = new Scanner(Paths.get(file.getAbsolutePath()));
                 while (reader.hasNextLine()) {
                     try {
@@ -77,9 +72,9 @@ public class Main {
                 while (reader.hasNextLine()) {
                     String[] Line = reader.nextLine().split(",");
                     try{
-                        int p = Integer.parseInt(Line[2]);
+                        int control = Integer.parseInt(Line[2]);
                     }
-                    catch (Exception e){
+                    catch (NumberFormatException e){
                         continue ;
                     }
                     for(int i=0 ; i<141 ; i++) {
@@ -103,7 +98,19 @@ public class Main {
     }
 
     public static int totalProfitOnDay(int month, int day) {
-        return 1234;
+
+        if(month >= 0 && month <= 11 && day >= 1 && day <= 28){
+            try{
+                int sum = 0;
+                for(int i=0 ; i<=4 ; i++){
+                    sum += profitData[month][day-1][i];
+                }
+                return sum ;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return -99999;
     }
 
     public static int commodityProfitInRange(String commodity, int from, int to) {
@@ -140,7 +147,13 @@ public class Main {
 
     public static void main(String[] args) {
         loadData();
-        System.out.println(mostProfitableCommodityInMonth(0));
         System.out.println("Data loaded – ready for queries");
+        /*
+        System.out.println(mostProfitableCommodityInMonth(1)); Works :)
+        System.out.println(profitData[0][0][0]); Works :)
+        System.out.println(totalProfitOnDay(0,1)); Works :)
+        */
+
+
     }
 }
