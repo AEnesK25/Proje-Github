@@ -113,12 +113,48 @@ public class Main {
         return -99999;
     }
 
-    public static int commodityProfitInRange(String commodity, int from, int to) {
-        return 1234;
+    public static int commodityProfitInRange(String commodity, int fromDay, int toDay) {
+
+        if(fromDay <= toDay && fromDay >= 1 && fromDay <= 28 && toDay >= 1 && toDay <= 28){
+            boolean control = false;
+            int commodityIndex = -1;
+            for(int i=0 ; i<=commodities.length ; i++){
+                if (commodities[i].equals(commodity)) {
+                    commodityIndex = i;
+                    control = true;
+                    break;
+                }
+            }
+            if (!control){return -99999;}
+            int sum = 0;
+            for(int i=0 ; i<=11 ; i++){
+                for(int j=fromDay ; j<=toDay ; j++){
+                    sum += profitData[i][j-1][commodityIndex];
+                }
+            }
+            return sum;
+        }
+        return -99999;
     }
 
     public static int bestDayOfMonth(int month) {
-        return 1234;
+        if(month >= 0 && month <= 11){
+            int Max = 0;
+            int day = -1;
+            for(int i=1 ; i<=28 ; i++){
+                int sum = 0;
+                for (int j=0 ; j<commodities.length ; j++) {
+                    sum += profitData[month][i - 1][j];
+                }
+                if(sum > Max){
+                    Max = sum ;
+                    day = i ;
+                }
+            }
+            System.out.print(day + ".day : ");
+            return Max;
+        }
+        return -1;
     }
 
     public static String bestMonthForCommodity(String comm) {
@@ -148,12 +184,13 @@ public class Main {
     public static void main(String[] args) {
         loadData();
         System.out.println("Data loaded – ready for queries");
-        /*
-        System.out.println(mostProfitableCommodityInMonth(1)); Works :)
-        System.out.println(profitData[0][0][0]); Works :)
-        System.out.println(totalProfitOnDay(0,1)); Works :)
-        */
 
+        //System.out.println(mostProfitableCommodityInMonth(1)); //Works but must fix it
+        //System.out.println(profitData[0][0][0]); //Works :)
+        //System.out.println(totalProfitOnDay(0,1)); //Works :)
+        //System.out.println(commodityProfitInRange("Oil",1, 2)); //Works :)
+        //System.out.println(bestDayOfMonth(0)); //Works but must fix it
 
+        // Don't forget to commit and delete these
     }
 }
