@@ -19,7 +19,6 @@ public class Main {
         for (int Month=0 ; Month<=11 ; Month++){
             String fileName = "Data_Files/" + months[Month] +".txt";
             try {
-                // To see if file appears or not
                 File file = new File(fileName);
                 reader = new Scanner(Paths.get(file.getAbsolutePath()));
                 while (reader.hasNextLine()) {
@@ -59,7 +58,6 @@ public class Main {
     // ======== 10 REQUIRED METHODS (Students fill these) ========
 
     public static String mostProfitableCommodityInMonth(int month) {
-
         if(month >= 0 && month <= 11){
             Scanner reader = null;
             System.out.println(months[month]);
@@ -98,7 +96,6 @@ public class Main {
     }
 
     public static int totalProfitOnDay(int month, int day) {
-
         if(month >= 0 && month <= 11 && day >= 1 && day <= 28){
             try{
                 int sum = 0;
@@ -114,7 +111,6 @@ public class Main {
     }
 
     public static int commodityProfitInRange(String commodity, int fromDay, int toDay) {
-
         if(fromDay <= toDay && fromDay >= 1 && fromDay <= 28 && toDay >= 1 && toDay <= 28){
             boolean control = false;
             int commodityIndex = -1;
@@ -158,11 +154,58 @@ public class Main {
     }
 
     public static String bestMonthForCommodity(String comm) {
-        return "DUMMY";
+
+        boolean control = false;
+        int commIndex = -1;
+        for(int i=0 ; i<=commodities.length ; i++){
+            if (commodities[i].equals(comm)) {
+                commIndex = i;
+                control = true;
+                break;
+            }
+        }
+        if (!control){return "INVALID_COMMODITY";}
+        int bestmonth = -1;
+        int max = 0;
+        for(int i=0 ; i<=11 ; i++){
+            int sum = 0;
+            for(int j=1 ; j<=28 ; j++){
+                sum += profitData[i][j-1][commIndex];
+            }
+            if(sum > max){
+                max = sum ;
+                bestmonth = i ;
+            }
+        }
+
+        return months[bestmonth] + ": " + max ;
     }
 
     public static int consecutiveLossDays(String comm) {
-        return 1234;
+        boolean control = false;
+        int commIndex = -1;
+        for(int i=0 ; i<=commodities.length ; i++){
+            if (commodities[i].equals(comm)) {
+                commIndex = i;
+                control = true;
+                break;
+            }
+        }
+        if (!control){return -1;}
+        int Longest_Streak = 0;
+        int current_Streak = 0;
+        for(int i=0 ; i<=11 ; i++){
+            for(int j=1 ; j<=28 ; j++){
+                if(profitData[i][j-1][commIndex] < 0){current_Streak++ ;
+                    if(current_Streak > Longest_Streak){
+                        Longest_Streak = current_Streak ;
+                    }
+                }
+                if (profitData[i][j-1][commIndex] >= 0){current_Streak = 0 ;}
+            }
+        }
+
+        return  Longest_Streak;
     }
 
     public static int daysAboveThreshold(String comm, int threshold) {
@@ -186,11 +229,13 @@ public class Main {
         System.out.println("Data loaded – ready for queries");
 
         //System.out.println(mostProfitableCommodityInMonth(1)); //Works but must fix it
-        //System.out.println(profitData[0][0][0]); //Works :)
+        //System.out.println(profitData[0][1][0]); //Works :)
         //System.out.println(totalProfitOnDay(0,1)); //Works :)
         //System.out.println(commodityProfitInRange("Oil",1, 2)); //Works :)
-        //System.out.println(bestDayOfMonth(0)); //Works but must fix it
-
+        //System.out.println(bestDayOfMonth(1)); //Works but must fix it
+        //System.out.println(bestMonthForCommodity("Gold")); //Works :)
+        //System.out.println(consecutiveLossDays("Gold")); //Works :)
+        //
         // Don't forget to commit and delete these
     }
 }
