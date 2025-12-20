@@ -3,6 +3,8 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static java.lang.Math.abs;
+
 public class Main {
     static final int MONTHS = 12;
     static final int DAYS = 28;
@@ -41,7 +43,7 @@ public class Main {
                             profitData[Month][dayIndex][commodityIndex] = profit;
                         }
                     }
-                    catch (Exception e){
+                    catch (NumberFormatException e){
                         continue ;
                     }
                 }
@@ -147,14 +149,12 @@ public class Main {
                     day = i ;
                 }
             }
-            System.out.print(day + ".day : ");
-            return Max;
+            return day;
         }
         return -1;
     }
 
     public static String bestMonthForCommodity(String comm) {
-
         boolean control = false;
         int commIndex = -1;
         for(int i=0 ; i<=commodities.length ; i++){
@@ -178,7 +178,7 @@ public class Main {
             }
         }
 
-        return months[bestmonth] + ": " + max ;
+        return months[bestmonth] ;
     }
 
     public static int consecutiveLossDays(String comm) {
@@ -209,11 +209,51 @@ public class Main {
     }
 
     public static int daysAboveThreshold(String comm, int threshold) {
-        return 1234;
+        boolean control = false;
+        int comIndex = -1;
+        for(int i=0 ; i<=commodities.length ; i++){
+            if (commodities[i].equals(comm)) {
+                comIndex = i;
+                control = true;
+                break;
+            }
+        }
+        if (!control){return -1;}
+        int days = 0;
+        for(int i=0 ; i<=11 ; i++){
+            for(int j=1 ; j<=28 ; j++){
+                if(profitData[i][j-1][comIndex] > threshold){
+                    days++ ;
+                }
+            }
+        }
+
+        return days;
     }
 
     public static int biggestDailySwing(int month) {
-        return 1234;
+        if(month >= 0 && month <= 11){
+            int abs_difference = 0;
+            int difference = 0;
+            int sum1 = 0;
+            int sum2 = 0;
+            for(int i=1 ; i<=28 ; i++){
+                for(int j=0 ; j<=4 ; j++) {
+                    sum1 += profitData[month][i-1][j] ;
+                    sum2 += profitData[month][i-2][j] ;
+                }
+                if ((sum2 - sum1) < 0) {difference = -(sum2 - sum1);}
+                else {difference = sum2 - sum1;}
+
+                if (difference > abs_difference){
+                    abs_difference = difference ;
+                }
+                System.out.println(i + " " +difference);
+            }
+            return abs_difference ;
+        }
+
+        return -99999;
     }
 
     public static String compareTwoCommodities(String c1, String c2) {
@@ -229,13 +269,16 @@ public class Main {
         System.out.println("Data loaded – ready for queries");
 
         //System.out.println(mostProfitableCommodityInMonth(1)); //Works but must fix it
-        //System.out.println(profitData[0][1][0]); //Works :)
+        //int sum = 0;
+        //for(int j=0 ; j<=4 ; j++) {sum += profitData[0][18][j];}
+        //System.out.println(sum);//Works :)
         //System.out.println(totalProfitOnDay(0,1)); //Works :)
         //System.out.println(commodityProfitInRange("Oil",1, 2)); //Works :)
-        //System.out.println(bestDayOfMonth(1)); //Works but must fix it
+        //System.out.println(bestDayOfMonth(0)); //Works but must fix it
         //System.out.println(bestMonthForCommodity("Gold")); //Works :)
         //System.out.println(consecutiveLossDays("Gold")); //Works :)
-        //
+        //System.out.println(daysAboveThreshold("Gold",3000)); //Works :)
+        //System.out.println(biggestDailySwing(0));
         // Don't forget to commit and delete these
     }
 }
