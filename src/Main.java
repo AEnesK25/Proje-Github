@@ -236,7 +236,6 @@ public class Main {
             }
             return abs_difference ;
         }
-
         return -99999;
     }
 
@@ -265,8 +264,13 @@ public class Main {
                 c2total += profitData[i][j-1][c2Index];
             }
         }
-        if(c1total > c2total) {return c1 +" is better by " + c2;}
-        if(c1total < c2total) {return c2 +" is better by " + c1;}
+        int c_dif = 0;
+        if(c1total > c2total) {
+            c_dif = c1total - c2total;
+            return c1 +" is better by " + c_dif;}
+        if(c1total < c2total) {
+            c_dif = c2total - c1total;
+            return c2 +" is better by " + c_dif;}
         return "Equal" ;
     }
 
@@ -318,18 +322,6 @@ public class Main {
     public static void main(String[] args) {
         loadData();
         System.out.println("Data loaded – ready for queries");
-
-        //System.out.println(mostProfitableCommodityInMonth(0)); //Works but must fix it
-        //System.out.println(profitData[0][0][0]); //Works :)
-        //System.out.println(totalProfitOnDay(0,15)); //Works :)
-        //System.out.println(commodityProfitInRange("Oil",1, 2)); //Works :)
-        //System.out.println(bestDayOfMonth(0)); //Works :)
-        //System.out.println(bestMonthForCommodity("Gold")); //Works :)
-        //System.out.println(consecutiveLossDays("Gold")); //Works :)
-        //System.out.println(daysAboveThreshold("Gold",3000)); //Works :)
-        //System.out.println(biggestDailySwing(0)); //Works :)
-        //System.out.println(compareTwoCommodities("Gold", "Oil")); //Works :)
-        //System.out.println(bestWeekOfMonth(0)); //Works :)
-        // Don't forget to commit and delete these
+        System.out.println(compareTwoCommodities("Gold","Oil"));
     }
 }
