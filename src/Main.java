@@ -322,6 +322,6 @@ public class Main {
     public static void main(String[] args) {
         loadData();
         System.out.println("Data loaded – ready for queries");
-        System.out.println(compareTwoCommodities("Gold","Oil"));
+
     }
 }
